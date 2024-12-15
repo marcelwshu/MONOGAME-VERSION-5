@@ -20,7 +20,7 @@ namespace MONOGAME_VERSION_5
 
 
         // CONFIG
-        private float FallSpeed = 100.0f;
+
 
 
         // Internal functions

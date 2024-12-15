@@ -37,7 +37,6 @@ namespace MONOGAME_VERSION_5
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                // If you see this, the git push worked
                 pos.X -= (MoveSpeed * deltaTime);
                 rotation = -(float)Math.PI / 4.0f;
             }
@@ -46,6 +45,17 @@ namespace MONOGAME_VERSION_5
             {
                 pos.X += (MoveSpeed * deltaTime);
                 rotation = (float)Math.PI / 4.0f;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                Game1.GameSpeed = 200;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                Game1.GameSpeed = 100;
             }
 
 

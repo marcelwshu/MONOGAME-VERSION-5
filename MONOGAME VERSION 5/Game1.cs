@@ -21,6 +21,7 @@ namespace MONOGAME_VERSION_5
         // CONFIG
         private bool DEBUG_ENABLED = false;
         public static Vector2 WINDOW_SIZE = new Vector2(1000, 1000);
+        public static float GameSpeed = 100;
 
 
 
@@ -101,7 +102,7 @@ namespace MONOGAME_VERSION_5
         {
 
             // Clear screen
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(new Color(153, 185, 0));
 
             // Draw scene
             _sceneManager.DrawScene();

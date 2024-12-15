@@ -22,6 +22,7 @@ namespace MONOGAME_VERSION_5
         private SpriteBatch SpriteBatch;
         private double LastRowRender = 0.0f;
         private double LastRockRender = 0.0f;
+        private int TileSize = 40;
 
 
 
@@ -116,11 +117,11 @@ namespace MONOGAME_VERSION_5
 
 
             // Load initial tiles for map
-            for (int x = 0; x < 10; x++)
+            for (int x = 0; x < Game1.WINDOW_SIZE.X / TileSize; x++)
             {
-                for (int y = -1; y < 11; y++)
+                for (int y = -1; y < (Game1.WINDOW_SIZE.X / TileSize) + 1; y++)
                 {
-                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(100 * x, 100 * y), new Vector2(100, 100), 0);
+                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * x, TileSize * y), new Vector2(TileSize, TileSize), 0);
                 }
             }
 
@@ -161,14 +162,15 @@ namespace MONOGAME_VERSION_5
 
             // Draw next row of terrain
             double timeNow = gameTime.TotalGameTime.TotalSeconds;
-            if ((timeNow - LastRowRender) > 1.0f)
+            float timeStep = TileSize / Game1.GameSpeed;
+            if ((timeNow - LastRowRender) >= timeStep)
             {
                 LastRowRender = timeNow;
 
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < Game1.WINDOW_SIZE.X /TileSize; i++)
                 {
-                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(100 * i, -145), new Vector2(100, 100), 0);
+                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize, TileSize), 0);
                 }
 
 
