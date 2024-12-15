@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin EndScreen.png
+#begin ../../../../../Documents/Monogame - Assets/ACTUAL ASSETS/StartScreen2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:EndScreen.png
+/build:../../../../../Documents/Monogame - Assets/ACTUAL ASSETS/StartScreen2.png;EndScreen.png
 
 #begin Font1.spritefont
 /importer:FontDescriptionImporter
@@ -272,7 +272,7 @@
 /processorParam:TextureFormat=Color
 /build:Rock9.png
 
-#begin StartScreen.png
+#begin StartScreen2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -282,7 +282,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:StartScreen.png
+/build:StartScreen2.png;StartScreen.png
 
 #begin Vehicle.png
 /importer:TextureImporter

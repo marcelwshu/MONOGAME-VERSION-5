@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
@@ -96,6 +97,20 @@ namespace MONOGAME_VERSION_5
             Sprite Menu = new Sprite(Content.Load<Texture2D>(sceneString), Pos, ScreenSize, 1);
 
 
+            // Game over screen
+            if (sceneString == "EndScreen") 
+            {
+                // Score text
+                ScoreText = new Text(" ", new Vector2(0, 0), Color.MediumPurple, Content.Load<SpriteFont>("Font1"));
+
+                string finalText = "Score this run: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
+                Vector2 textSizeOffset = ScoreText.font.MeasureString(finalText);
+
+                ScoreText.str = finalText;
+                ScoreText.position = new Vector2((Game1.WINDOW_SIZE.X / 2) - textSizeOffset.X/2, Game1.WINDOW_SIZE.Y/2 + Game1.WINDOW_SIZE.Y / 4);
+                
+                Game1._texts.Add(ScoreText);
+            }
 
 
 
@@ -113,15 +128,13 @@ namespace MONOGAME_VERSION_5
 
 
             // Setup
+            Game1._texts.Clear();
             activeSprites.Clear();
             CurrentScene = "Playing";
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
 
 
    
-
-
-
             // Create player object
             Vector2 PLAYER_SIZE = new Vector2(150, 150);
             float PLAYER_Y_STATIC = 0.7f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
@@ -204,7 +217,7 @@ namespace MONOGAME_VERSION_5
 
 
             // Generate random debris
-            if ((timeNow - LastRockRender) > 3.0f)
+            if ((timeNow - LastRockRender) > 2.0f)
             {
                 LastRockRender = timeNow;
 
