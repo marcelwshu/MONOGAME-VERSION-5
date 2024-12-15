@@ -29,5 +29,20 @@ namespace MONOGAME_VERSION_5
                 Game1._sceneManager.activeSprites.Remove(this);
             }
         }
+
+
+        public override void Render(SpriteBatch spriteBatch)
+        {
+            //base.Render(spriteBatch);   
+
+            Vector2 spriteOrigin = new Vector2(texture.Width / 2f, texture.Height / 2f);
+
+            Rectangle Rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
+
+            Vector2 scale = new Vector2(size.X / texture.Width, size.Y / texture.Height);
+            spriteBatch.Draw(texture, pos, null, Color.White, rotation, spriteOrigin, scale, SpriteEffects.None, 1);
+
+        }
+
     }
 }

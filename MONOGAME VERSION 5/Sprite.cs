@@ -42,12 +42,10 @@ namespace MONOGAME_VERSION_5
         public virtual void Render(SpriteBatch spriteBatch)
         {
 
-            Vector2 spriteOrigin;
-            spriteOrigin.X = texture.Width / 2;
-            spriteOrigin.Y = texture.Height / 2;
 
             Rectangle Rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
             spriteBatch.Draw(texture, Rect, color:Color.White);
+
 
         }
 

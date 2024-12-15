@@ -30,7 +30,7 @@ namespace MONOGAME_VERSION_5
             if (player != null)
             {
                 // Define separate padding for the player
-                float paddingX = 60.0f;
+                float paddingX = 65.0f;
                 float paddingY = 40.0f;
 
                 // Adjust the player's hitbox with padding

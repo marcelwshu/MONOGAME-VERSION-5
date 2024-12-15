@@ -23,7 +23,11 @@ namespace MONOGAME_VERSION_5
         private SpriteBatch SpriteBatch;
         private double LastRowRender = 0.0f;
         private double LastRockRender = 0.0f;
-        private int TileSize = 40;
+        private int TileSize = 30;
+        private int RockSize = 80;
+        private int RockSpawnAmountMin = 4;
+        private int RockSpawnAmountMax = 10;
+        private float RockSpawnInterval = 1.5f;
 
         private Text ScoreText;
 
@@ -52,14 +56,14 @@ namespace MONOGAME_VERSION_5
         {
             var weightedTextures = new List<(string textureName, int weight)>
             {
-            ("Grass1", 70), // Small/med rock
+            ("Grass1", 175), // Small/med rock
             ("Grass2", 200), // Small rock
             ("Grass3", 10), // Big rock
-            ("Grass4", 15), // Big/med rock
+            ("Grass4", 50), // Big/med rock
             ("Grass5", 10), // Big rock
-            ("Grass6", 500), // Smooth
+            ("Grass6", 800), // Smooth
             ("Grass7", 10), // Big rock
-            ("Grass8", 500), // Smooth
+            ("Grass8", 800), // Smooth
             ("Grass9", 150), // Med rock
             ("Grass10", 200), // Small rock
             };
@@ -210,6 +214,13 @@ namespace MONOGAME_VERSION_5
                 for (int i = 0; i < Game1.WINDOW_SIZE.X /TileSize; i++)
                 {
                     BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize, TileSize), 0);
+
+                    // Random rotation of tile
+                    Random random = new Random();
+                    float newRot = random.Next(1, 4) * (MathF.PI/2);
+
+                    tile.rotation = newRot;
+
                 }
 
 
@@ -217,13 +228,13 @@ namespace MONOGAME_VERSION_5
 
 
             // Generate random debris
-            if ((timeNow - LastRockRender) > 2.0f)
+            if ((timeNow - LastRockRender) > RockSpawnInterval)
             {
                 LastRockRender = timeNow;
 
                 Random random = new Random();
 
-                int randomAmount = random.Next(4, 8);
+                int randomAmount = random.Next(RockSpawnAmountMin, RockSpawnAmountMax);
 
                 for (int i = 0; i < randomAmount; i++)
                 {
@@ -231,7 +242,8 @@ namespace MONOGAME_VERSION_5
                     int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
                     int randomY = random.Next(-500, -150);
 
-                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(80, 80), 1);
+                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);
+ 
                 }
 
 
