@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:EndScreen.png
 
+#begin Font1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font1.spritefont
+
 #begin Grass1.png
 /importer:TextureImporter
 /processor:TextureProcessor

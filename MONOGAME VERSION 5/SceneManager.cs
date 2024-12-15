@@ -24,6 +24,8 @@ namespace MONOGAME_VERSION_5
         private double LastRockRender = 0.0f;
         private int TileSize = 40;
 
+        private Text ScoreText;
+
 
 
         // Public Vars
@@ -40,6 +42,7 @@ namespace MONOGAME_VERSION_5
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             CurrentScene = "GAME_SCENE_NIL";
             activeSprites = new List<Sprite>();
+
         }
 
 
@@ -81,6 +84,7 @@ namespace MONOGAME_VERSION_5
         {
 
             // Setup
+            Game1._texts.Clear();
             activeSprites.Clear();
             CurrentScene = sceneString;
 
@@ -89,8 +93,11 @@ namespace MONOGAME_VERSION_5
             Vector2 ScreenSize = new Vector2(Game1.WINDOW_SIZE.X, Game1.WINDOW_SIZE.Y);
             Vector2 Pos = new Vector2((Game1.WINDOW_SIZE.X / 2) - (ScreenSize.X / 2), (Game1.WINDOW_SIZE.Y / 2) - (ScreenSize.Y / 2)); // Center the sprite
 
-
             Sprite Menu = new Sprite(Content.Load<Texture2D>(sceneString), Pos, ScreenSize, 1);
+
+
+
+
 
 
         }
@@ -103,10 +110,15 @@ namespace MONOGAME_VERSION_5
 
             Console.WriteLine("Loading level");
 
+
+
             // Setup
             activeSprites.Clear();
             CurrentScene = "Playing";
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
+
+
+   
 
 
 
@@ -116,6 +128,11 @@ namespace MONOGAME_VERSION_5
             Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
 
             Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, 2);
+
+
+            // Score text
+            ScoreText = new Text("Score: ", new Vector2(PLAYER_DEFAULT_POS.X, 0), Color.Black, Content.Load<SpriteFont>("Font1"));
+            Game1._texts.Add(ScoreText);
 
 
             // Load initial tiles for map
@@ -157,6 +174,9 @@ namespace MONOGAME_VERSION_5
             Game1.CurrentGameSpeed += 0.1f;
 
 
+            ScoreText.str = "Score: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
+
+
             // Update sprites
             var sortedSprites = activeSprites.OrderBy(s => s.depth).ToList();
             foreach (var sprite in sortedSprites)
@@ -195,7 +215,7 @@ namespace MONOGAME_VERSION_5
                 for (int i = 0; i < randomAmount; i++)
                 {
                     
-                    int randomX = random.Next(-1000, 1001);
+                    int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
                     int randomY = random.Next(-500, -150);
 
                     Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(80, 80), 1);
