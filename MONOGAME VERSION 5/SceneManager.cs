@@ -23,7 +23,7 @@ namespace MONOGAME_VERSION_5
         private SpriteBatch SpriteBatch;
         private double LastRowRender = 0.0f;
         private double LastRockRender = 0.0f;
-        private int TileSize = 30;
+        private int TileSize = 34;
         private int RockSize = 80;
         private int RockSpawnAmountMin = 4;
         private int RockSpawnAmountMax = 10;
@@ -54,7 +54,8 @@ namespace MONOGAME_VERSION_5
         // Functions
         private Texture2D GetRandomGroundTexture()
         {
-            var weightedTextures = new List<(string textureName, int weight)>
+
+            var weightedTexturesLevel1 = new List<(string textureName, int weight)>
             {
             ("Grass1", 175), // Small/med rock
             ("Grass2", 200), // Small rock
@@ -68,19 +69,115 @@ namespace MONOGAME_VERSION_5
             ("Grass10", 200), // Small rock
             };
 
-            return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTextures));
+            var weightedTexturesLevel2 = new List<(string textureName, int weight)>
+            {
+            ("Sand1", 10), // Big rock
+            ("Sand2", 200), // Smallr ock
+            ("Sand3", 150), // Med
+            ("Sand4", 150), // Med
+            ("Sand5", 10), // Big
+            ("Sand6", 10), // Big
+            ("Sand7", 10), // Big
+            ("Sand8", 200), // Small
+            ("Sand9", 800), // Smooth
+            ("Sand10", 800), // Smooth
+            };
+
+            var weightedTexturesLevel3 = new List<(string textureName, int weight)>
+            {
+            ("Clay1", 150), // Med
+            ("Clay2", 150), // Med
+            ("Clay3", 10),  // Big
+            ("Clay4", 200), // Small
+            ("Clay5", 10),  // Big
+            ("Clay6", 10), // Big
+            ("Clay7", 800), // Smooth
+            ("Clay8", 10), // Big
+            ("Clay9", 800), // Smooth
+            ("Clay10", 200), // Small
+            };
+
+
+            if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
+            {
+                return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel3));
+            }
+
+
+            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+            {
+                return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel2));
+            }
+
+            // Default 
+            return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel1));
+
+
         }
 
         private Texture2D GetRandomRockTexture()
         {
-            string[] textureNames = {
-            "Rock1", "Rock2", "Rock3", "Rock4", "Rock5",
-            "Rock6", "Rock7", "Rock8", "Rock9",
+
+            // Level 1
+            var weightedTexturesLevel1 = new List<(string textureName, int weight)>
+            {
+            ("Rock1", 1), 
+            ("Rock2", 1), 
+            ("Rock3", 1), 
+            ("Rock4", 1), 
+            ("Rock5", 1), 
+            ("Rock6", 1), 
+            ("Rock7", 1), 
+            ("Rock8", 1),
+            ("Rock9", 1), 
+            ("Rock10", 1),
             };
 
-            Random random = new Random();
-            string randomTextureName = textureNames[random.Next(textureNames.Length)];
-            return Content.Load<Texture2D>(randomTextureName);
+            // Level 2
+            var weightedTexturesLevel2 = new List<(string textureName, int weight)>
+            {
+            ("Tree1", 3), 
+            ("Tree2", 1), 
+            ("Tree3", 5), 
+            //("Tree4", 3), 
+            ("Tree5", 1), 
+            ("Tree6", 2), 
+            ("Tree7", 3), 
+            ("Tree8", 1),
+            ("Tree9", 1),
+            ("Tree10", 1),
+            ("Tree11", 1),
+            };
+
+            // Level 3
+            var weightedTexturesLevel3 = new List<(string textureName, int weight)>
+            {
+            ("Bones1", 3), // Skull
+            ("Bones2", 1), // Mouth
+            ("Bones3", 5), // Bone
+            ("Bones4", 3), // Skull
+            ("Bones5", 1), // Open mouth
+            ("Bones6", 2), // broke bone
+            ("Bones7", 3), // Skull
+            ("Grave1", 1), 
+            ("Grave2", 1), 
+            ("Grave3", 1), 
+            };
+
+
+            if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
+            {
+                return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel3));
+            }
+
+            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+            {
+                return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel2));
+            }
+
+  
+            // Default 
+            return Content.Load<Texture2D>(WeightedProbability.GetRandomWeightedItem(weightedTexturesLevel1));
         }
 
 
@@ -141,7 +238,7 @@ namespace MONOGAME_VERSION_5
    
             // Create player object
             Vector2 PLAYER_SIZE = new Vector2(150, 150);
-            float PLAYER_Y_STATIC = 0.7f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
+            float PLAYER_Y_STATIC = 0.9f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
             Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
 
             Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, 2);
@@ -213,7 +310,7 @@ namespace MONOGAME_VERSION_5
 
                 for (int i = 0; i < Game1.WINDOW_SIZE.X /TileSize; i++)
                 {
-                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize, TileSize), 0);
+                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize*1.2f, TileSize*1.2f), 0); // Slightly oversize to avoid gaps in renderer...
 
                     // Random rotation of tile
                     Random random = new Random();

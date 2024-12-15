@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MONOGAME_VERSION_5;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
@@ -23,8 +24,11 @@ namespace MONOGAME_VERSION_5
         // CONFIG
         private bool DEBUG_ENABLED = false;
         public static Vector2 WINDOW_SIZE;
-        public static float DefaultGameSpeed = 100;
+        public static float DefaultGameSpeed = 120;
         public static float CurrentGameSpeed = DefaultGameSpeed;
+        public static int Level2Threshold = 500;
+        public static int Level3Threshold = 1000;
+
 
         public Game1() // Runs first
         {
@@ -96,8 +100,23 @@ namespace MONOGAME_VERSION_5
 
         protected override void Draw(GameTime gameTime)
         {
-            // Clear screen
-            GraphicsDevice.Clear(new Color(153, 185, 0));
+            // Clear screen, hack fix for gaps between tiles
+            if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
+            {
+                GraphicsDevice.Clear(new Color(162, 93, 38)); // Brown
+                
+            }
+            else if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+            {
+
+                GraphicsDevice.Clear(new Color(250, 223, 165)); // Sand
+            }
+            else
+            {
+                GraphicsDevice.Clear(new Color(153, 185, 0)); // Green
+            }
+
+
 
 
 
