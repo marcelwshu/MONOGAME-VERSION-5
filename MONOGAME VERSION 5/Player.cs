@@ -37,6 +37,7 @@ namespace MONOGAME_VERSION_5
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
+                // If you see this, the git push worked
                 pos.X -= (MoveSpeed * deltaTime);
                 rotation = -(float)Math.PI / 4.0f;
             }
