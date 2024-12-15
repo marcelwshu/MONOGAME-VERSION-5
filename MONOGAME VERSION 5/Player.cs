@@ -60,7 +60,7 @@ namespace MONOGAME_VERSION_5
 
 
             // Steer speed
-            this.CurrentSteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 4);
+            this.CurrentSteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 2);
 
 
             pos.X = Math.Clamp(pos.X, 0, Game1.WINDOW_SIZE.X - size.X); // Adjusted to ensure the vehicle

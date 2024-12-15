@@ -275,7 +275,7 @@ namespace MONOGAME_VERSION_5
         }
 
 
-        public void UpdateScene(GameTime gameTime)
+        public async void UpdateScene(GameTime gameTime)
         {
 
             if (CurrentScene != "Playing")
@@ -339,8 +339,17 @@ namespace MONOGAME_VERSION_5
                     int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
                     int randomY = random.Next(-500, -150);
 
-                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);
- 
+                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);  
+
+
+                    // Warn
+                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(100,100), 3);
+                    WarnSprite.pos = new Vector2(randomX - 50, 0);
+
+                    //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
+                    await Task.Delay( 500 );
+                    activeSprites.Remove(WarnSprite);
+
                 }
 
 
