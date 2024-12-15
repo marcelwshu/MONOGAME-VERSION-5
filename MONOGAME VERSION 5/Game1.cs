@@ -20,8 +20,9 @@ namespace MONOGAME_VERSION_5
 
         // CONFIG
         private bool DEBUG_ENABLED = false;
-        public static Vector2 WINDOW_SIZE = new Vector2(1000, 1000);
-        public static float GameSpeed = 100;
+        public static Vector2 WINDOW_SIZE;
+        public static float DefaultGameSpeed = 100;
+        public static float CurrentGameSpeed = DefaultGameSpeed;
 
 
 
@@ -34,8 +35,12 @@ namespace MONOGAME_VERSION_5
             IsMouseVisible = true;
 
             // Set window size
+            var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+            WINDOW_SIZE = new Vector2(displayMode.Width, displayMode.Height);
+
             _graphics.PreferredBackBufferWidth = (int)WINDOW_SIZE.X;
             _graphics.PreferredBackBufferHeight = (int)WINDOW_SIZE.Y;
+            _graphics.IsFullScreen = true; // Add this line
             _graphics.ApplyChanges();
 
 

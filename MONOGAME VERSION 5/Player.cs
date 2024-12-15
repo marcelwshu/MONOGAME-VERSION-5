@@ -20,7 +20,7 @@ namespace MONOGAME_VERSION_5
 
 
         // CONFIG
-        private float MoveSpeed = 300.0f;
+        private float SteerSpeed = 300.0f;
 
 
 
@@ -37,26 +37,17 @@ namespace MONOGAME_VERSION_5
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                pos.X -= (MoveSpeed * deltaTime);
+                pos.X -= (SteerSpeed * deltaTime);
                 rotation = -(float)Math.PI / 4.0f;
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                pos.X += (MoveSpeed * deltaTime);
+                pos.X += (SteerSpeed * deltaTime);
                 rotation = (float)Math.PI / 4.0f;
             }
 
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-            {
-                Game1.GameSpeed = 200;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                Game1.GameSpeed = 100;
-            }
 
 
             pos.X = Math.Clamp(pos.X, 0, Game1.WINDOW_SIZE.X - size.X); // Adjusted to ensure the vehicle

@@ -21,7 +21,7 @@ namespace MONOGAME_VERSION_5
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Make them "fall"
-            pos.Y += (Game1.GameSpeed * deltaTime);
+            pos.Y += (Game1.CurrentGameSpeed * deltaTime);
 
             // Reset position if it goes off screen
             if (pos.Y > Game1.WINDOW_SIZE.Y)

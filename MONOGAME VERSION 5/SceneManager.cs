@@ -100,11 +100,13 @@ namespace MONOGAME_VERSION_5
         public void LoadLevel()
         {
 
+
             Console.WriteLine("Loading level");
 
             // Setup
             activeSprites.Clear();
             CurrentScene = "Playing";
+            Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
 
 
 
@@ -150,8 +152,12 @@ namespace MONOGAME_VERSION_5
                 return;
             }
 
-            // Update sprites
 
+            // Speed game up
+            Game1.CurrentGameSpeed += 0.1f;
+
+
+            // Update sprites
             var sortedSprites = activeSprites.OrderBy(s => s.depth).ToList();
             foreach (var sprite in sortedSprites)
             {
@@ -162,7 +168,7 @@ namespace MONOGAME_VERSION_5
 
             // Draw next row of terrain
             double timeNow = gameTime.TotalGameTime.TotalSeconds;
-            float timeStep = TileSize / Game1.GameSpeed;
+            float timeStep = TileSize / Game1.CurrentGameSpeed;
             if ((timeNow - LastRowRender) >= timeStep)
             {
                 LastRowRender = timeNow;
