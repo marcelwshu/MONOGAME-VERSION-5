@@ -23,8 +23,9 @@ namespace MONOGAME_VERSION_5
 
         // CONFIG
         private bool DEBUG_ENABLED = false;
+        public static float SpeedUpAmount = 0.05f;
         public static Vector2 WINDOW_SIZE;
-        public static float DefaultGameSpeed = 120;
+        public static float DefaultGameSpeed = 350;
         public static float CurrentGameSpeed = DefaultGameSpeed;
         public static int Level2Threshold = 500;
         public static int Level3Threshold = 1000;

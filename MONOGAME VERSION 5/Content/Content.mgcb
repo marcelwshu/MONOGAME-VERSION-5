@@ -25,6 +25,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Documents/Monogame - Assets/ACTUAL ASSETS/StartScreen2.png;EndScreen.png
 
+#begin ../../../../../Downloads/EnemyHeavy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../../../Downloads/EnemyHeavy.png;EnemyHeavy.png
+
 #begin Bones1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -108,6 +120,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Bones7.png
+
+#begin Car_BMW_M1_86x145.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Car_BMW_M1_86x145.png;Ferrari.png
 
 #begin Clay1.png
 /importer:TextureImporter
@@ -228,6 +252,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Clay9.png
+
+#begin EnemyStandard.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EnemyStandard.png
 
 #begin Font1.spritefont
 /importer:FontDescriptionImporter
@@ -799,4 +835,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:warning.png
+
+#begin warningRed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:warningRed.png
 

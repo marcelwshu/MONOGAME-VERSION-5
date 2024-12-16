@@ -28,8 +28,13 @@ namespace MONOGAME_VERSION_5
         private int RockSpawnAmountMin = 4;
         private int RockSpawnAmountMax = 10;
         private float RockSpawnInterval = 1.5f;
+        double lastEnemyRender = 0;
 
         private Text ScoreText;
+        Vector2 PLAYER_SIZE = new Vector2(150, 150);
+
+        //
+        Player player;
 
 
 
@@ -235,9 +240,11 @@ namespace MONOGAME_VERSION_5
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
 
 
-   
+    
+
+
+
             // Create player object
-            Vector2 PLAYER_SIZE = new Vector2(150, 150);
             float PLAYER_Y_STATIC = 0.9f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
             Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
 
@@ -257,6 +264,9 @@ namespace MONOGAME_VERSION_5
                     BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * x, TileSize * y), new Vector2(TileSize, TileSize), 0);
                 }
             }
+
+
+            player =  Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
 
         }
 
@@ -285,7 +295,7 @@ namespace MONOGAME_VERSION_5
 
 
             // Speed game up
-            Game1.CurrentGameSpeed += 0.1f;
+            Game1.CurrentGameSpeed += Game1.SpeedUpAmount;
 
 
             ScoreText.str = "Score: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
@@ -337,13 +347,13 @@ namespace MONOGAME_VERSION_5
                 {
                     
                     int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
-                    int randomY = random.Next(-500, -150);
+                    int randomY = random.Next(-500, -300);
 
                     Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);  
 
 
                     // Warn
-                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(100,100), 3);
+                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
                     WarnSprite.pos = new Vector2(randomX - 50, 0);
 
                     //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
@@ -354,6 +364,60 @@ namespace MONOGAME_VERSION_5
 
 
             }
+
+
+
+            // Generate random enemies
+
+            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+            {
+
+                if ((timeNow - lastEnemyRender) > 1)
+                {
+                    lastEnemyRender = timeNow;
+
+                    Random random = new Random();
+
+                    int randomAmount = random.Next(1, 2);
+
+                    for (int i = 0; i < randomAmount; i++)
+                    {
+
+                        //int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
+                        int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 4, (int)Game1.WINDOW_SIZE.X / 4);
+
+                        int randomY = random.Next(-500, -300);
+
+                        Enemy Enemy;
+                        if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
+                        {
+                            Enemy = new Enemy(Content.Load<Texture2D>("EnemyHeavy"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 3, true);
+                        }
+                        else
+                        {
+                            Enemy = new Enemy(Content.Load<Texture2D>("EnemyStandard"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 1, false);
+                        }
+
+
+
+                        // Warn
+                        Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
+                        WarnSprite.pos = new Vector2(randomX - 50, 0);
+
+                        //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
+                        await Task.Delay(500);
+                        activeSprites.Remove(WarnSprite);
+
+
+
+
+                    }
+
+
+                }
+
+            }
+
 
 
 

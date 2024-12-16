@@ -6,6 +6,7 @@ using SharpDX.Direct2D1;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 using Color = Microsoft.Xna.Framework.Color;
@@ -24,7 +25,7 @@ namespace MONOGAME_VERSION_5
 
 
         // Internal functions
-        private void CheckCollisions()
+        public virtual void CheckCollisions()
         {
             Player player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
             if (player != null)
