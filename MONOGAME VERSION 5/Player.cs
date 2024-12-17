@@ -20,6 +20,8 @@ namespace MONOGAME_VERSION_5
 
 
         // Vars
+        public int Health;
+
         private float DefaultSteerSpeed = 300.0f;
         private float SteerAnimationTime = 10;
         private float CurrentSteerSpeed;
@@ -29,9 +31,10 @@ namespace MONOGAME_VERSION_5
 
 
         // Constructor
-        public Player(Texture2D texture, Vector2 pos, Vector2 size, int depth) : base(texture, pos, size, depth)
+        public Player(Texture2D texture, Vector2 pos, Vector2 size, int depth, int health) : base(texture, pos, size, depth)
         {
             CurrentSteerSpeed = DefaultSteerSpeed;
+            Health = health;
         }
 
 
@@ -70,6 +73,12 @@ namespace MONOGAME_VERSION_5
             // Clamp the vehicle within window border
             pos.X = Math.Clamp(pos.X, 0, Game1.WINDOW_SIZE.X - size.X);
 
+            
+            // Check if dead
+            if (this.Health < 1)
+            {
+                Game1._sceneManager.LoadMenu("EndScreen");
+            } 
 
         }
 

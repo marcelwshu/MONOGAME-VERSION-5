@@ -53,8 +53,14 @@ namespace MONOGAME_VERSION_5
                         paddedPlayerPos.Y < debris.pos.Y + debris.size.Y &&
                         paddedPlayerPos.Y + paddedPlayerSize.Y > debris.pos.Y)
                     {
-                        // Collision detected, end the game
-                        Game1._sceneManager.LoadMenu("EndScreen");
+                        // Collision detected
+
+                        // Remove health from player
+                        player.Health -= 1;
+
+                        // Destroy debris instance
+                        Game1._sceneManager.activeSprites.Remove(this);
+
                         break;
                     }
                 }
