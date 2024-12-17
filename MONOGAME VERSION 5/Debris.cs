@@ -21,7 +21,7 @@ namespace MONOGAME_VERSION_5
 
 
         // Vars
-        float paddingX = 65.0f;
+        float paddingX = 55.0f;
         float paddingY = 40.0f;
 
 
@@ -46,24 +46,22 @@ namespace MONOGAME_VERSION_5
                 Vector2 paddedPlayerSize = new Vector2(player.size.X - 2 * paddingX, player.size.Y - 2 * paddingY);
 
 
-                foreach (var debris in Game1._sceneManager.activeSprites.OfType<Debris>())
+                if (paddedPlayerPos.X < this.pos.X + this.size.X &&
+                   paddedPlayerPos.X + paddedPlayerSize.X > this.pos.X &&
+                   paddedPlayerPos.Y < this.pos.Y + this.size.Y &&
+                   paddedPlayerPos.Y + paddedPlayerSize.Y > this.pos.Y)
                 {
-                    if (paddedPlayerPos.X < debris.pos.X + debris.size.X &&
-                        paddedPlayerPos.X + paddedPlayerSize.X > debris.pos.X &&
-                        paddedPlayerPos.Y < debris.pos.Y + debris.size.Y &&
-                        paddedPlayerPos.Y + paddedPlayerSize.Y > debris.pos.Y)
-                    {
-                        // Collision detected
+                    // Collision detected
 
-                        // Remove health from player
-                        player.Health -= 1;
+                    // Remove health from player
+                    player.Health -= 1;
 
-                        // Destroy debris instance
-                        Game1._sceneManager.activeSprites.Remove(this);
+                    // Destroy debris instance
+                    Game1._sceneManager.activeSprites.Remove(this);
 
-                        break;
-                    }
+   
                 }
+
             }
         }
 

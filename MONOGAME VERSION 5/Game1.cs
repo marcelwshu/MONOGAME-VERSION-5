@@ -25,11 +25,11 @@ namespace MONOGAME_VERSION_5
         // Config 
         public static float SpeedUpAmount = 0.05f; // How fast the game speed increases
 
-        public static float DefaultGameSpeed = 350; // Initial speed of game
+        public static float DefaultGameSpeed = 250; // Initial speed of game
         public static float CurrentGameSpeed = DefaultGameSpeed;
 
-        public static int Level2Threshold = 100; // When level 2 loads
-        public static int Level3Threshold = 800; // When level 3 loads
+        public static int Level2Threshold = 250; // When level 2 loads
+        public static int Level3Threshold = 500; // When level 3 loads
 
 
 
