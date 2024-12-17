@@ -19,52 +19,58 @@ namespace MONOGAME_VERSION_5
     internal class Enemy : Debris
     {
 
+        // Vars
         private float DefaultSteerSpeed = 40f;
+        public float CurrentSteerSpeed;
 
-        public float Speed = 50;
-        public float SteerSpeed;
-        public int health;
-        public bool steer;
+        private float DefaultMoveSpeed = 40f;
+        public float CurrentMoveSpeed;
 
+        public int Health;
+        public bool Steer; // If enemy follows player
+
+
+        // Constructor
         public Enemy(Texture2D texture, Vector2 pos, Vector2 size, int depth, int health, bool steer) : base(texture, pos, size, depth)
         {
-            this.steer = steer;
+            this.Health = health;
+            this.Steer = steer;
         }
 
+
+        // Methods
         public override void Update(GameTime gameTime)
         {
+
             base.Update(gameTime);
 
 
             // Vars
-            Player player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Player Player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
+            float Delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
 
-            // Update speed
-            this.SteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 4);
+            // Update steer & move speed
+            this.CurrentSteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 4);
+            this.CurrentMoveSpeed = DefaultMoveSpeed + (Game1.CurrentGameSpeed / 4);
 
 
-
-            // Move the enemy
-            pos.Y += (Speed + (Game1.CurrentGameSpeed / 4)) * deltaTime;
+            // Move enemy down the screen
+            pos.Y += (CurrentMoveSpeed + (Game1.CurrentGameSpeed / 4)) * Delta;
 
 
             // Steer towards player 
-            if (player != null && steer)
+            if (Player != null && Steer)
             {
        
-                // Rotation logic
-                int signedDir = MathF.Sign(player.pos.X - pos.X);
+                // Calculate direction to move towards
+                int signedDir = MathF.Sign(Player.pos.X - pos.X);
+                
+                // Rotate towards direction
+                this.rotation = MathHelper.Lerp(rotation, signedDir * -MathF.PI / 4 , 10 * Delta);
 
-                this.rotation = MathHelper.Lerp(rotation, signedDir * -MathF.PI / 4 , 10 * deltaTime);
-
-
-                pos.X += (signedDir * SteerSpeed) * deltaTime;
-
-
-
-
+                // Move x axis towards player
+                pos.X += (signedDir * CurrentSteerSpeed) * Delta;
 
             }
 
@@ -76,31 +82,37 @@ namespace MONOGAME_VERSION_5
         {
             base.CheckCollisions();
 
-            float paddingX = 20;
+            // Vars
+            float paddingX = 20; // Padding is used to decrease hitbox size
             float paddingY = 30;
 
-  
             Vector2 paddedPos = new Vector2(this.pos.X + paddingX, this.pos.Y + paddingY);
             Vector2 paddedSize = new Vector2(this.size.X - 2 * paddingX, this.size.Y - 2 * paddingY);
 
+            // Loop through all objects which inherit or are debris class
             foreach (var debris in Game1._sceneManager.activeSprites.OfType<Debris>())
             {
-                if (debris.GetType() == typeof(Debris))
+                if (debris.GetType() == typeof(Debris)) // Filter for ONLY debris class
                 {
                     if (paddedPos.X < debris.pos.X + debris.size.X &&
                         paddedPos.X + paddedSize.X > debris.pos.X &&
                         paddedPos.Y < debris.pos.Y + debris.size.Y &&
                         paddedPos.Y + paddedSize.Y > debris.pos.Y)
                     {
-                        Console.WriteLine(debris);
-                        // Collision detected, end the game
+   
+                        // Collision detected, delete debri
                         Game1._sceneManager.activeSprites.Remove(debris);
-                        this.health -= 1;
-                        if (this.health <= 0)
+
+                        // Remove health, if less than 1 then enemy gets deleted
+                        this.Health -= 1;
+                        if (this.Health <= 0)
                         {
                             Game1._sceneManager.activeSprites.Remove(this);
                         }
+
+                        // Instance deleted, return from loop
                         break;
+
                     }
                 }
             }

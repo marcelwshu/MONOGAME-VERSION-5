@@ -18,14 +18,18 @@ namespace MONOGAME_VERSION_5
         // Functions
         public override void Update(GameTime gameTime)
         {
+
             base.Update(gameTime);
 
+            // Vars
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // Make them "fall"
+
+            // Move tile down the screen
             pos.Y += (Game1.CurrentGameSpeed * deltaTime);
 
-            // Reset position if it goes off screen
+
+            // Delete sprite if off screen
             if (pos.Y > Game1.WINDOW_SIZE.Y)
             {
                 Game1._sceneManager.activeSprites.Remove(this);
@@ -35,13 +39,12 @@ namespace MONOGAME_VERSION_5
 
         public override void Render(SpriteBatch spriteBatch)
         {
-            //base.Render(spriteBatch);   
-
+    
+            // Draw sprite
             Vector2 spriteOrigin = new Vector2(texture.Width / 2f, texture.Height / 2f);
-
             Rectangle Rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
-
             Vector2 scale = new Vector2(size.X / texture.Width, size.Y / texture.Height);
+
             spriteBatch.Draw(texture, pos, null, Color.White, rotation, spriteOrigin, scale, SpriteEffects.None, 1);
 
         }
