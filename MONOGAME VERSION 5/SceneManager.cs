@@ -21,25 +21,30 @@ namespace MONOGAME_VERSION_5
         private GraphicsDevice GraphicsDevice;
         private ContentManager Content;
         private SpriteBatch SpriteBatch;
+
+        private Text ScoreText;
+        private Player player;
+
         private double LastRowRender = 0.0f;
         private double LastRockRender = 0.0f;
+
+        private double lastEnemyRender = 0;
+
+        // Config
         private int TileSize = 34;
         private int RockSize = 80;
+
         private int RockSpawnAmountMin = 4;
         private int RockSpawnAmountMax = 10;
         private float RockSpawnInterval = 1.5f;
-        double lastEnemyRender = 0;
 
-        private Text ScoreText;
-        Vector2 PLAYER_SIZE = new Vector2(150, 150);
-
-        //
-        Player player;
-
+        private Vector2 PLAYER_SIZE = new Vector2(150, 150);
+        private float PLAYER_Y_STATIC = 0.9f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
 
 
         // Public Vars
         public string CurrentScene; // StartMenu , EndMenu , Playing
+
         public List<Sprite> activeSprites;
 
 
@@ -187,7 +192,7 @@ namespace MONOGAME_VERSION_5
 
 
         // Methods
-        public void LoadMenu(string sceneString)
+        public void LoadMenu(string sceneString) // Either start or end screen
         {
 
             // Setup
@@ -196,25 +201,29 @@ namespace MONOGAME_VERSION_5
             CurrentScene = sceneString;
 
 
-            // Load start/end screen
+            // Calculate position
             Vector2 ScreenSize = new Vector2(Game1.WINDOW_SIZE.X, Game1.WINDOW_SIZE.Y);
             Vector2 Pos = new Vector2((Game1.WINDOW_SIZE.X / 2) - (ScreenSize.X / 2), (Game1.WINDOW_SIZE.Y / 2) - (ScreenSize.Y / 2)); // Center the sprite
 
+            // Load menu
             Sprite Menu = new Sprite(Content.Load<Texture2D>(sceneString), Pos, ScreenSize, 1);
 
 
-            // Game over screen
+            // If it's the end screen, display score
             if (sceneString == "EndScreen") 
             {
-                // Score text
+                // Create text instance
                 ScoreText = new Text(" ", new Vector2(0, 0), Color.MediumPurple, Content.Load<SpriteFont>("Font1"));
 
+                // Calculate text and offset
                 string finalText = "Score this run: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
                 Vector2 textSizeOffset = ScoreText.font.MeasureString(finalText);
 
+                // Assign data to text
                 ScoreText.str = finalText;
                 ScoreText.position = new Vector2((Game1.WINDOW_SIZE.X / 2) - textSizeOffset.X/2, Game1.WINDOW_SIZE.Y/2 + Game1.WINDOW_SIZE.Y / 4);
                 
+                // Add text instance to renderer
                 Game1._texts.Add(ScoreText);
             }
 
@@ -223,14 +232,9 @@ namespace MONOGAME_VERSION_5
 
         }
 
-        // Note: maybe make sprite constructor automagically add to active sprites?
 
-        public void LoadLevel()
+        public void LoadLevel() // Initiate core game loop
         {
-
-
-            Console.WriteLine("Loading level");
-
 
 
             // Setup
@@ -238,25 +242,20 @@ namespace MONOGAME_VERSION_5
             activeSprites.Clear();
             CurrentScene = "Playing";
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
+            player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
 
 
-    
-
-
-
-            // Create player object
-            float PLAYER_Y_STATIC = 0.9f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
+            //  Calculate player position, create player object
             Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
-
             Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, 2);
 
 
-            // Score text
+            // Create score text
             ScoreText = new Text("Score: ", new Vector2(PLAYER_DEFAULT_POS.X, 0), Color.Black, Content.Load<SpriteFont>("Font1"));
             Game1._texts.Add(ScoreText);
 
 
-            // Load initial tiles for map
+            // Load initial tiles for whole map
             for (int x = 0; x < Game1.WINDOW_SIZE.X / TileSize; x++)
             {
                 for (int y = -1; y < (Game1.WINDOW_SIZE.X / TileSize) + 1; y++)
@@ -266,15 +265,16 @@ namespace MONOGAME_VERSION_5
             }
 
 
-            player =  Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
-
         }
 
 
         public void DrawScene()
         {
 
+            // Sort sprite list based on depth, (z axis)
             var sortedSprites = activeSprites.OrderBy(s => s.depth).ToList();
+
+            // Call render methods on sprites
             SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             foreach (var sprite in sortedSprites)
             {
@@ -288,16 +288,23 @@ namespace MONOGAME_VERSION_5
         public async void UpdateScene(GameTime gameTime)
         {
 
+            // No scene to update unless the level is loaded
             if (CurrentScene != "Playing")
             {
                 return;
             }
 
 
-            // Speed game up
+            // Vars
+            double timeNow = gameTime.TotalGameTime.TotalSeconds;
+            float timeStep = TileSize / Game1.CurrentGameSpeed;
+
+
+            // Increase game speed gradually
             Game1.CurrentGameSpeed += Game1.SpeedUpAmount;
 
 
+            // Update score
             ScoreText.str = "Score: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
 
 
@@ -310,14 +317,15 @@ namespace MONOGAME_VERSION_5
             }
 
 
-            // Draw next row of terrain
-            double timeNow = gameTime.TotalGameTime.TotalSeconds;
-            float timeStep = TileSize / Game1.CurrentGameSpeed;
-            if ((timeNow - LastRowRender) >= timeStep)
+            // Draw next row of terrain just abovee the screen
+            // We use the (time = distance (TileSize) / speed (CurrentGameSpeed) ) formula to calculate when to render next row
+            if ((timeNow - LastRowRender) >= timeStep) // Check debounce
             {
+
+                // Update var
                 LastRowRender = timeNow;
 
-
+                // Iterate based on screen and tile size
                 for (int i = 0; i < Game1.WINDOW_SIZE.X /TileSize; i++)
                 {
                     BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize*1.2f, TileSize*1.2f), 0); // Slightly oversize to avoid gaps in renderer...
@@ -330,31 +338,36 @@ namespace MONOGAME_VERSION_5
 
                 }
 
-
             }
 
 
             // Generate random debris
-            if ((timeNow - LastRockRender) > RockSpawnInterval)
+            if ((timeNow - LastRockRender) > RockSpawnInterval) // Check debounce
             {
+
+
+                // Vars
                 LastRockRender = timeNow;
-
                 Random random = new Random();
-
                 int randomAmount = random.Next(RockSpawnAmountMin, RockSpawnAmountMax);
 
+                // Iterate random amount
                 for (int i = 0; i < randomAmount; i++)
                 {
                     
-                    int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
-                    int randomY = random.Next(-500, -300);
+                    // Calculate random point
+                    int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X); // Random point along the whole x axis on screen
+                    int randomY = random.Next(-500, -300); // Random y point
 
+
+                    // Create new debris class
                     Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);  
 
 
-                    // Warn
+                    // Create warning
                     Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
                     WarnSprite.pos = new Vector2(randomX - 50, 0);
+
 
                     //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
                     await Task.Delay( 500 );
@@ -366,28 +379,29 @@ namespace MONOGAME_VERSION_5
             }
 
 
-
             // Generate random enemies
-
-            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed)) // Check if level 2
             {
 
+                // Check debounce
                 if ((timeNow - lastEnemyRender) > 5)
                 {
+
+                    // Vars
                     lastEnemyRender = timeNow;
-
                     Random random = new Random();
-
                     int randomAmount = random.Next(1, 2);
 
+                    // Iterate random amount
                     for (int i = 0; i < randomAmount; i++)
                     {
 
-                        //int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
+                        // Calculate random position based on player x axis
                         int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 3, (int)Game1.WINDOW_SIZE.X / 3);
-
                         int randomY = random.Next(-500, -300);
 
+
+                        // Decide which enemy type to use
                         Enemy Enemy;
                         if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
                         {
@@ -400,7 +414,7 @@ namespace MONOGAME_VERSION_5
 
 
 
-                        // Warn
+                        // Create warning
                         Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
                         WarnSprite.pos = new Vector2(randomX - 50, 0);
 

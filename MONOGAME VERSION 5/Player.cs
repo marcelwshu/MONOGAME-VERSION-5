@@ -46,13 +46,13 @@ namespace MONOGAME_VERSION_5
 
 
             // Inputs
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) // Turn left
             {
                 pos.X -= (CurrentSteerSpeed * Delta);
                 TargetRot = -(float)Math.PI / 4.0f;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            if (Keyboard.GetState().IsKeyDown(Keys.D)) // Turn right
             {
                 pos.X += (CurrentSteerSpeed * Delta);
                 TargetRot = (float)Math.PI / 4.0f;

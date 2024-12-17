@@ -45,6 +45,7 @@ namespace MONOGAME_VERSION_5
                 Vector2 paddedPlayerPos = new Vector2(player.pos.X + paddingX, player.pos.Y + paddingY);
                 Vector2 paddedPlayerSize = new Vector2(player.size.X - 2 * paddingX, player.size.Y - 2 * paddingY);
 
+
                 foreach (var debris in Game1._sceneManager.activeSprites.OfType<Debris>())
                 {
                     if (paddedPlayerPos.X < debris.pos.X + debris.size.X &&
