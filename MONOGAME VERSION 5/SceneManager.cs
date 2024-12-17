@@ -242,12 +242,15 @@ namespace MONOGAME_VERSION_5
             activeSprites.Clear();
             CurrentScene = "Playing";
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
-            player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
+            
 
 
             //  Calculate player position, create player object
             Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
             Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, 2, 3);
+
+            // Update empty var
+            player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
 
 
             // Create score text

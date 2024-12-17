@@ -28,7 +28,7 @@ namespace MONOGAME_VERSION_5
         public static float DefaultGameSpeed = 350; // Initial speed of game
         public static float CurrentGameSpeed = DefaultGameSpeed;
 
-        public static int Level2Threshold = 400; // When level 2 loads
+        public static int Level2Threshold = 100; // When level 2 loads
         public static int Level3Threshold = 800; // When level 3 loads
 
 
