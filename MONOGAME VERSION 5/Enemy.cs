@@ -92,7 +92,7 @@ namespace MONOGAME_VERSION_5
             // Loop through all objects which inherit or are debris class
             foreach (var debris in Game1._sceneManager.activeSprites.OfType<Debris>())
             {
-                if (debris.GetType() == typeof(Debris)) // Filter for ONLY debris class
+                if (this.GetType() == typeof(Debris)) // Filter for ONLY debris class
                 {
                     if (paddedPos.X < debris.pos.X + debris.size.X &&
                         paddedPos.X + paddedSize.X > debris.pos.X &&

@@ -307,8 +307,8 @@ namespace MONOGAME_VERSION_5
             Game1.CurrentGameSpeed += Game1.SpeedUpAmount;
 
 
-            // Update score
-            ScoreText.str = "Score: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed);
+            // Update score & health text
+            ScoreText.str = "Score: " + Math.Round(Game1.CurrentGameSpeed - Game1.DefaultGameSpeed) + "\n Lives: " + player.Health;
 
 
             // Update sprites
