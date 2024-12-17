@@ -372,7 +372,7 @@ namespace MONOGAME_VERSION_5
             if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
             {
 
-                if ((timeNow - lastEnemyRender) > 1)
+                if ((timeNow - lastEnemyRender) > 5)
                 {
                     lastEnemyRender = timeNow;
 
@@ -384,7 +384,7 @@ namespace MONOGAME_VERSION_5
                     {
 
                         //int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X);
-                        int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 4, (int)Game1.WINDOW_SIZE.X / 4);
+                        int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 3, (int)Game1.WINDOW_SIZE.X / 3);
 
                         int randomY = random.Next(-500, -300);
 

@@ -11,11 +11,13 @@ namespace MONOGAME_VERSION_5
 {
     internal class Text
     {
-        // Variables
+
+        // Vars
         public string str = "Default Text";
         public Vector2 position;
         public Color color;
         public SpriteFont font;
+
 
         // Constructor
         public Text(string str, Vector2 position, Color color, SpriteFont font)
@@ -26,10 +28,12 @@ namespace MONOGAME_VERSION_5
             this.font = font;
         }
 
-        // Method to render the text
+
+        // Methods
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, str, position, color);
         }
+
     }
 }

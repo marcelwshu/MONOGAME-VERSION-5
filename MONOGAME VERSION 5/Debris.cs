@@ -20,21 +20,28 @@ namespace MONOGAME_VERSION_5
     {
 
 
-        // CONFIG
+        // Vars
+        float paddingX = 65.0f;
+        float paddingY = 40.0f;
 
 
+
+        // Constructor
+        public Debris(Texture2D texture, Vector2 pos, Vector2 size, int depth) : base(texture, pos, size, depth)
+        {
+   
+        }
 
         // Internal functions
-        public virtual void CheckCollisions()
+        public virtual void CheckCollisions() // This might be inefficient because its looping over all debri classes.. in every instance?
         {
+
+            // Loop over all debri classes 
             Player player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
             if (player != null)
             {
-                // Define separate padding for the player
-                float paddingX = 65.0f;
-                float paddingY = 40.0f;
 
-                // Adjust the player's hitbox with padding
+                // Adjust invisible hitbox size
                 Vector2 paddedPlayerPos = new Vector2(player.pos.X + paddingX, player.pos.Y + paddingY);
                 Vector2 paddedPlayerSize = new Vector2(player.size.X - 2 * paddingX, player.size.Y - 2 * paddingY);
 
@@ -53,10 +60,7 @@ namespace MONOGAME_VERSION_5
             }
         }
 
-        public Debris(Texture2D texture, Vector2 pos, Vector2 size, int depth) : base(texture, pos, size, depth)
-        {
-            //Console.WriteLine("debris class initiated");
-        }
+
 
         public override void Update(GameTime gameTime)
         {

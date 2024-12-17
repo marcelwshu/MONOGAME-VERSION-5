@@ -34,6 +34,7 @@ namespace MONOGAME_VERSION_5
         }
 
 
+        // Methods
         public virtual void Update(GameTime gameTime)
         {
   
@@ -42,10 +43,8 @@ namespace MONOGAME_VERSION_5
         public virtual void Render(SpriteBatch spriteBatch)
         {
 
-
             Rectangle Rect = new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
             spriteBatch.Draw(texture, Rect, color:Color.White);
-
 
         }
 

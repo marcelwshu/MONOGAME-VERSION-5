@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Downloads/EnemyHeavy.png;EnemyHeavy.png
 
+#begin Audio/Loaded.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Loaded.wav
+
+#begin Audio/Play.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Play.wav
+
 #begin Bones1.png
 /importer:TextureImporter
 /processor:TextureProcessor

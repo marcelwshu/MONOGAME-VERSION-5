@@ -13,6 +13,7 @@ namespace MONOGAME_VERSION_5
 {
     public class Game1 : Game
     {
+
         // Vars
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -27,8 +28,8 @@ namespace MONOGAME_VERSION_5
         public static Vector2 WINDOW_SIZE;
         public static float DefaultGameSpeed = 350;
         public static float CurrentGameSpeed = DefaultGameSpeed;
-        public static int Level2Threshold = 500;
-        public static int Level3Threshold = 1000;
+        public static int Level2Threshold = 400;
+        public static int Level3Threshold = 800;
 
 
         public Game1() // Runs first
@@ -52,6 +53,8 @@ namespace MONOGAME_VERSION_5
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(6.94);
 
+    
+
         }
 
         protected override void Initialize()
@@ -61,7 +64,9 @@ namespace MONOGAME_VERSION_5
             _sceneManager = new SceneManager(GraphicsDevice, Content);
 
 
-  
+            //Audio AudioClass = new Audio("gg");
+
+            //Audio SoundLoaded = new Audio("Loaded");
 
 
             // Load start screen
@@ -73,7 +78,7 @@ namespace MONOGAME_VERSION_5
         protected override void LoadContent() // Runs after initialize
         {
 
-            
+   
         }
 
         protected override void Update(GameTime gameTime)

@@ -7,13 +7,15 @@ namespace MONOGAME_VERSION_5
     internal class BackgroundObject : Sprite
     {
 
+
+        // Constructor
         public BackgroundObject(Texture2D texture, Vector2 pos, Vector2 size, int depth) : base(texture, pos, size, (int)depth)
         {
            
         }
 
 
-
+        // Functions
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
