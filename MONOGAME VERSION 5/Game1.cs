@@ -19,55 +19,54 @@ namespace MONOGAME_VERSION_5
         private SpriteBatch _spriteBatch;
         internal static SceneManager _sceneManager;
 
-        // List to store Text objects
+        public static Vector2 WINDOW_SIZE;
         internal static List<Text> _texts;
 
-        // CONFIG
-        private bool DEBUG_ENABLED = false;
-        public static float SpeedUpAmount = 0.05f;
-        public static Vector2 WINDOW_SIZE;
-        public static float DefaultGameSpeed = 350;
+        // Config 
+        public static float SpeedUpAmount = 0.05f; // How fast the game speed increases
+
+        public static float DefaultGameSpeed = 350; // Initial speed of game
         public static float CurrentGameSpeed = DefaultGameSpeed;
-        public static int Level2Threshold = 400;
-        public static int Level3Threshold = 800;
+
+        public static int Level2Threshold = 400; // When level 2 loads
+        public static int Level3Threshold = 800; // When level 3 loads
+
 
 
         public Game1() // Runs first
         {
+
+            // Init vars
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-
-            // Set window size
             var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+            _texts = new List<Text>();
+
+
+            // Update window size var
             WINDOW_SIZE = new Vector2(displayMode.Width, displayMode.Height);
 
+
+            // Set resolution to monitor, full screen
             _graphics.PreferredBackBufferWidth = (int)WINDOW_SIZE.X;
             _graphics.PreferredBackBufferHeight = (int)WINDOW_SIZE.Y;
             _graphics.IsFullScreen = true; // Add this line
             _graphics.ApplyChanges();
 
-            // Initialize the list of Text objects
-            _texts = new List<Text>();
 
+            // Uncap framerate to 144
             IsFixedTimeStep = false;
             TargetElapsedTime = TimeSpan.FromMilliseconds(6.94);
 
-    
 
         }
 
         protected override void Initialize()
         {
+
             // Init services
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _sceneManager = new SceneManager(GraphicsDevice, Content);
-
-
-            //Audio AudioClass = new Audio("gg");
-
-            //Audio SoundLoaded = new Audio("Loaded");
-
 
             // Load start screen
             _sceneManager.LoadMenu("StartScreen");
@@ -83,6 +82,8 @@ namespace MONOGAME_VERSION_5
 
         protected override void Update(GameTime gameTime)
         {
+
+            // Exit game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -98,7 +99,7 @@ namespace MONOGAME_VERSION_5
                 _sceneManager.LoadLevel();
             }
 
-            // Update scene
+            // Update the active scene
             _sceneManager.UpdateScene(gameTime);
 
             base.Update(gameTime);
@@ -106,15 +107,13 @@ namespace MONOGAME_VERSION_5
 
         protected override void Draw(GameTime gameTime)
         {
-            // Clear screen, hack fix for gaps between tiles
+            // Dirty hack for hiding gaps in tile renderer (Sets background to tile color average)
             if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
             {
-                GraphicsDevice.Clear(new Color(162, 93, 38)); // Brown
-                
+                GraphicsDevice.Clear(new Color(162, 93, 38)); // Brown      
             }
             else if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
             {
-
                 GraphicsDevice.Clear(new Color(250, 223, 165)); // Sand
             }
             else
@@ -123,14 +122,11 @@ namespace MONOGAME_VERSION_5
             }
 
 
-
-
-
-            // Draw scene
+            // Render the active scene
             _sceneManager.DrawScene();
 
 
-            // Draw the text objects
+            // Draw the text objects (Must be rendered last)
             _spriteBatch.Begin();
             foreach (var text in _texts)
             {
@@ -139,6 +135,7 @@ namespace MONOGAME_VERSION_5
             _spriteBatch.End();
 
             base.Draw(gameTime);
+
         }
     }
 }
