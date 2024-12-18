@@ -18,6 +18,7 @@ namespace MONOGAME_VERSION_5
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         internal static SceneManager _sceneManager;
+        internal static Audio _audioManager;
 
         public static Vector2 WINDOW_SIZE;
         internal static List<Text> _texts;
@@ -67,6 +68,7 @@ namespace MONOGAME_VERSION_5
             // Init services
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _sceneManager = new SceneManager(GraphicsDevice, Content);
+            _audioManager = new Audio(Content);
 
             // Load start screen
             _sceneManager.LoadMenu("StartScreen");

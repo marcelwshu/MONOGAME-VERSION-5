@@ -24,9 +24,12 @@ namespace MONOGAME_VERSION_5
 
 
         // Method
-        public void PlaySound(string name)
+        public void PlaySound(string name, float volume)
         {
-            
+            SoundEffect sound = Content.Load<SoundEffect>("Audio/"+name);
+            sound.Play(volume, 0.0f, 0.0f);
+
+
         }
 
 

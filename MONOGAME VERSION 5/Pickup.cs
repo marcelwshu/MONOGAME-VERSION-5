@@ -81,12 +81,13 @@ namespace MONOGAME_VERSION_5
                 if (Type == "Health")
                 {
                     player.Health += 1;
+                    Game1._audioManager.PlaySound("HealthPickup", 0.5f);
                 }
 
 
                 if (Type == "Whiskey")
                 {
-
+                    Game1._audioManager.PlaySound("WhiskeyPickup", 0.5f);
                     player.DrunkFactor += 1;
                 }
 

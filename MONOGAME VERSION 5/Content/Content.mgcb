@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Downloads/EnemyHeavy.png;EnemyHeavy.png
 
+#begin Audio/HealthPickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/HealthPickup.wav
+
 #begin Audio/Loaded.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -48,6 +54,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/Play.wav
+
+#begin Audio/WhiskeyPickup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/WhiskeyPickup.wav
 
 #begin Bones1.png
 /importer:TextureImporter
