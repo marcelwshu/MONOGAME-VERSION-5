@@ -57,6 +57,11 @@ namespace MONOGAME_VERSION_5
 
             Player player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
 
+            if (player == null)
+            {
+                return;
+            }
+
             float paddingX = 20; // Padding is used to decrease hitbox size
             float paddingY = 30;
 
@@ -81,7 +86,8 @@ namespace MONOGAME_VERSION_5
 
                 if (Type == "Whiskey")
                 {
-                    player.Health += 1;
+
+                    player.DrunkFactor += 1;
                 }
 
 
