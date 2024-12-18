@@ -411,7 +411,17 @@ namespace MONOGAME_VERSION_5
 
 
                 // Create new debris class
-                Pickup Rock = new Pickup(Content.Load<Texture2D>("Heart"), new Vector2(randomX, -randomY), new Vector2(DebrisSize, DebrisSize), 1, "Health");  // Penultimate paramater is render depth which should always be 1 (Debris)
+                if (random.Next(0,100) > 50)
+                {
+                    // Health
+                    Pickup Health = new Pickup(Content.Load<Texture2D>("Heart"), new Vector2(randomX, -randomY), new Vector2(DebrisSize, DebrisSize), 1, "Health");  // Penultimate paramater is render depth which should always be 1 (Debris)
+                }
+                else
+                {
+                    // Whiskey
+                    Pickup Whiskey = new Pickup(Content.Load<Texture2D>("Whiskey"), new Vector2(randomX, -randomY), new Vector2(DebrisSize, DebrisSize), 1, "Whiskey");  // Penultimate paramater is render depth which should always be 1 (Debris)
+                }
+                
 
 
             }

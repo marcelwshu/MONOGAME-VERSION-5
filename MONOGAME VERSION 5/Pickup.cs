@@ -78,7 +78,13 @@ namespace MONOGAME_VERSION_5
                     player.Health += 1;
                 }
 
-                
+
+                if (Type == "Whiskey")
+                {
+                    player.Health += 1;
+                }
+
+
             }
 
 
