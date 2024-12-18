@@ -26,20 +26,28 @@ namespace MONOGAME_VERSION_5
         private Player player;
 
         private double LastRowRender = 0.0f;
-        private double LastRockRender = 0.0f;
+        private double LastDebrisRender = 0.0f;
 
-        private double lastEnemyRender = 0;
+        private double LastEnemyRender = 0;
+        private float EnemyRenderDebounce = 4f;
 
         // Config
         private int TileSize = 34;
-        private int RockSize = 80;
+        private int DebrisSize = 80;
+        private int WarnSize = 100;
 
-        private int RockSpawnAmountMin = 4;
-        private int RockSpawnAmountMax = 10;
-        private float RockSpawnInterval = 1.5f;
+        private int WarnDuration = 500;
+
+        private int DebrisSpawnAmountMin = 4;
+        private int DebrisSpawnAmountMax = 10;
+        private float DebrisSpawnInterval = 1.5f;
+        private float DebrisRandomYMax = 200;
+        private float DebrisStaticYOffset = 200;
 
         private Vector2 PLAYER_SIZE = new Vector2(150, 150);
         private float PLAYER_Y_STATIC = 0.9f; // A ratio of how far down the screen the vehicle is, 0 being top, 1 being down
+        private int DEFAULT_PLR_HP = 3;
+        private int PLR_DEPTH = 1;
 
 
         // Public Vars
@@ -246,15 +254,16 @@ namespace MONOGAME_VERSION_5
 
 
             //  Calculate player position, create player object
-            Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2));
-            Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, 2, 3);
+            Vector2 PLAYER_DEFAULT_POS = new Vector2((Game1.WINDOW_SIZE.X / 2) - (PLAYER_SIZE.X / 2), (Game1.WINDOW_SIZE.Y * PLAYER_Y_STATIC) - (PLAYER_SIZE.Y / 2)); // Divide by 2 to get center
+            Player Vehicle = new Player(Content.Load<Texture2D>("Vehicle"), PLAYER_DEFAULT_POS, PLAYER_SIZE, PLR_DEPTH, DEFAULT_PLR_HP);
+
 
             // Update empty var
             player = Game1._sceneManager.activeSprites.OfType<Player>().FirstOrDefault();
 
 
             // Create score text
-            ScoreText = new Text("Score: ", new Vector2(PLAYER_DEFAULT_POS.X, 0), Color.Black, Content.Load<SpriteFont>("Font1"));
+            ScoreText = new Text("Score: ", new Vector2(PLAYER_DEFAULT_POS.X, 0), Color.Black, Content.Load<SpriteFont>("Font1")); // Align text with center of screen using plr pos var
             Game1._texts.Add(ScoreText);
 
 
@@ -331,11 +340,13 @@ namespace MONOGAME_VERSION_5
                 // Iterate based on screen and tile size
                 for (int i = 0; i < Game1.WINDOW_SIZE.X /TileSize; i++)
                 {
-                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize*1.2f, TileSize*1.2f), 0); // Slightly oversize to avoid gaps in renderer...
+                    // Slightly oversize to avoid gaps in renderer...
+                    // Last paramater is renderer depth which should always be 0 (Background)
+                    BackgroundObject tile = new BackgroundObject(GetRandomGroundTexture(), new Vector2(TileSize * i, -TileSize), new Vector2(TileSize*1.2f, TileSize*1.2f), 0); // 1.2 tile size mult to fix render issues
 
                     // Random rotation of tile
                     Random random = new Random();
-                    float newRot = random.Next(1, 4) * (MathF.PI/2);
+                    float newRot = random.Next(1, 4) * (MathF.PI/2); // Rotate tile 90 degrees up to 4 times
 
                     tile.rotation = newRot;
 
@@ -345,14 +356,14 @@ namespace MONOGAME_VERSION_5
 
 
             // Generate random debris
-            if ((timeNow - LastRockRender) > RockSpawnInterval) // Check debounce
+            if ((timeNow - LastDebrisRender) > DebrisSpawnInterval) // Check debounce
             {
 
 
                 // Vars
-                LastRockRender = timeNow;
+                LastDebrisRender = timeNow;
                 Random random = new Random();
-                int randomAmount = random.Next(RockSpawnAmountMin, RockSpawnAmountMax);
+                int randomAmount = random.Next(DebrisSpawnAmountMin, DebrisSpawnAmountMax);
 
                 // Iterate random amount
                 for (int i = 0; i < randomAmount; i++)
@@ -360,20 +371,20 @@ namespace MONOGAME_VERSION_5
                     
                     // Calculate random point
                     int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X); // Random point along the whole x axis on screen
-                    int randomY = random.Next(-500, -300); // Random y point
+                    int randomY = random.Next(0, (int)DebrisRandomYMax) + (int)DebrisStaticYOffset; // Random y point
 
 
                     // Create new debris class
-                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, randomY), new Vector2(RockSize, RockSize), 1);  
+                    Debris Rock = new Debris(GetRandomRockTexture(), new Vector2(randomX, -randomY), new Vector2(DebrisSize, DebrisSize), 1);  // Last paramater is render depth which should always be 1 (Debris)
 
 
                     // Create warning
-                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
-                    WarnSprite.pos = new Vector2(randomX - 50, 0);
+                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("Warning"), new Vector2(randomX, 0), new Vector2(WarnSize, WarnSize), 3); // Last paramater is render depth which should always be 3 (UI)
+                    WarnSprite.pos = new Vector2(randomX - 50, 0); // Magic number.. don't have time to figure out why it works
 
 
                     //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
-                    await Task.Delay( 500 );
+                    await Task.Delay( WarnDuration );
                     activeSprites.Remove(WarnSprite);
 
                 }
@@ -387,11 +398,11 @@ namespace MONOGAME_VERSION_5
             {
 
                 // Check debounce
-                if ((timeNow - lastEnemyRender) > 5)
+                if ((timeNow - LastEnemyRender) > EnemyRenderDebounce)
                 {
 
                     // Vars
-                    lastEnemyRender = timeNow;
+                    LastEnemyRender = timeNow;
                     Random random = new Random();
                     int randomAmount = random.Next(1, 2);
 
@@ -418,11 +429,11 @@ namespace MONOGAME_VERSION_5
 
 
                         // Create warning
-                        Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(150, 150), 3);
+                        Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(WarnSize, WarnSize), 3);
                         WarnSprite.pos = new Vector2(randomX - 50, 0);
 
                         //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
-                        await Task.Delay(500);
+                        await Task.Delay(WarnDuration);
                         activeSprites.Remove(WarnSprite);
 
 

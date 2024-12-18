@@ -23,7 +23,7 @@ namespace MONOGAME_VERSION_5
         private float DefaultSteerSpeed = 40f;
         public float CurrentSteerSpeed;
 
-        private float DefaultMoveSpeed = 40f;
+        private float DefaultMoveSpeed = 250f;
         public float CurrentMoveSpeed;
 
         public int Health;
