@@ -56,6 +56,9 @@ namespace MONOGAME_VERSION_5
                     // Remove health from player
                     player.Health -= 1;
 
+                    // Play sound
+                    //Game1._audioManager.PlaySound("PlayerHit", 0.5f); Build error.. cant use this
+
                     // Destroy debris instance
                     Game1._sceneManager.activeSprites.Remove(this);
 

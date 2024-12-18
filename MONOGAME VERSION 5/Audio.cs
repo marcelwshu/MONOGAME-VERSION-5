@@ -7,14 +7,13 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 
+
 namespace MONOGAME_VERSION_5
 {
     internal class Audio
     {
-
         // Vars
         private ContentManager Content;
-
 
         // Constructor
         public Audio(ContentManager mngr)
@@ -22,16 +21,20 @@ namespace MONOGAME_VERSION_5
             Content = mngr;
         }
 
-
         // Method
         public void PlaySound(string name, float volume)
         {
-            SoundEffect sound = Content.Load<SoundEffect>("Audio/"+name);
+            SoundEffect sound = Content.Load<SoundEffect>("Audio/" + name);
             sound.Play(volume, 0.0f, 0.0f);
-
-
         }
 
-
+        public void PlaySong(string name, float volume)
+        {
+            Song song = Content.Load<Song>("Audio/" + name);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = volume;
+            MediaPlayer.Play(song);
+        }
     }
 }
+

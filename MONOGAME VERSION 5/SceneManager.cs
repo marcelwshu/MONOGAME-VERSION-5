@@ -253,7 +253,13 @@ namespace MONOGAME_VERSION_5
             activeSprites.Clear();
             CurrentScene = "Playing";
             Game1.CurrentGameSpeed = Game1.DefaultGameSpeed;
-            
+
+
+            // Load song
+            Game1._audioManager.PlaySong("Song", 0.5f);
+
+            // Load start sound
+            Game1._audioManager.PlaySound("Loaded", 0.5f);
 
 
             //  Calculate player position, create player object

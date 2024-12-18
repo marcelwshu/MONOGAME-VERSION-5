@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MONOGAME_VERSION_5;
@@ -79,7 +80,10 @@ namespace MONOGAME_VERSION_5
         protected override void LoadContent() // Runs after initialize
         {
 
-   
+            // Load sounds
+            Content.Load<SoundEffect>("Audio/HealthPickup");
+            Content.Load<SoundEffect>("Audio/WhiskeyPickup");
+
         }
 
         protected override void Update(GameTime gameTime)
