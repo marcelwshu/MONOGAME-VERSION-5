@@ -26,10 +26,13 @@ namespace MONOGAME_VERSION_5
         private Player player;
 
         private double LastRowRender = 0.0f;
-        private double LastDebrisRender = 0.0f;
+        private double LastDebrisSpawn = 0.0f;
 
-        private double LastEnemyRender = 0;
-        private float EnemyRenderDebounce = 4f;
+        private double LastEnemySpawn = 0;
+        private float EnemySpawnDebounce = 4f;
+
+        private double LastPickupSpawn = 0;
+        private float PickupSpawnDebounce = 4f;
 
         // Config
         private int TileSize = 34;
@@ -356,12 +359,12 @@ namespace MONOGAME_VERSION_5
 
 
             // Generate random debris
-            if ((timeNow - LastDebrisRender) > DebrisSpawnInterval) // Check debounce
+            if ((timeNow - LastDebrisSpawn) > DebrisSpawnInterval) // Check debounce
             {
 
 
                 // Vars
-                LastDebrisRender = timeNow;
+                LastDebrisSpawn = timeNow;
                 Random random = new Random();
                 int randomAmount = random.Next(DebrisSpawnAmountMin, DebrisSpawnAmountMax);
 
@@ -393,16 +396,37 @@ namespace MONOGAME_VERSION_5
             }
 
 
+            // Generate random pickups
+            if ((timeNow - LastPickupSpawn) > PickupSpawnDebounce) // Check debounce
+            {
+
+
+                // Vars
+                LastPickupSpawn = timeNow;
+                Random random = new Random();
+         
+                // Calculate random point
+                int randomX = random.Next(-(int)Game1.WINDOW_SIZE.X, (int)Game1.WINDOW_SIZE.X); // Random point along the whole x axis on screen
+                int randomY = random.Next(0, (int)DebrisRandomYMax) + (int)DebrisStaticYOffset; // Random y point
+
+
+                // Create new debris class
+                Pickup Rock = new Pickup(Content.Load<Texture2D>("Heart"), new Vector2(randomX, -randomY), new Vector2(DebrisSize, DebrisSize), 1, "Health");  // Penultimate paramater is render depth which should always be 1 (Debris)
+
+
+            }
+
+
             // Generate random enemies
             if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed)) // Check if level 2
             {
 
                 // Check debounce
-                if ((timeNow - LastEnemyRender) > EnemyRenderDebounce)
+                if ((timeNow - LastEnemySpawn) > EnemySpawnDebounce)
                 {
 
                     // Vars
-                    LastEnemyRender = timeNow;
+                    LastEnemySpawn = timeNow;
                     Random random = new Random();
                     int randomAmount = random.Next(1, 2);
 
