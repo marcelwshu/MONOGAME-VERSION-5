@@ -27,7 +27,7 @@ namespace MONOGAME_VERSION_5
         private float CurrentSteerSpeed;
 
 
-        private float DrunkRecoveryDuration = 5.0f;
+        private float DrunkRecoverySpeed = 0.2f;
         private float DrunkDeviationSpeed = 5.0f;
         private float DrunkDeviationStrength = 2.0f;
 
@@ -69,10 +69,13 @@ namespace MONOGAME_VERSION_5
             }
 
 
+            // Drunkness
             float DrunkSine = (float)Math.Sin( (gameTime.TotalGameTime.TotalSeconds * DrunkDeviationSpeed) ) * (DrunkDeviationStrength * DrunkFactor);
             Console.WriteLine(gameTime.TotalGameTime.TotalSeconds);
             pos.X += DrunkSine;
             TargetRot += DrunkSine/(float)Math.PI;
+
+            DrunkFactor = MathHelper.Lerp(DrunkFactor, 0, DrunkRecoverySpeed * Delta);
 
 
             // Calculate rotation angle
