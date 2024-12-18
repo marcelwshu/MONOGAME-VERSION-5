@@ -21,7 +21,7 @@ namespace MONOGAME_VERSION_5
 
 
         // Vars
-        float paddingX = 30.0f;
+        float paddingX = 50.0f;
         float paddingY = 35.0f;
 
 
