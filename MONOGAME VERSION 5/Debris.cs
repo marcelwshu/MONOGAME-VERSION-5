@@ -24,6 +24,8 @@ namespace MONOGAME_VERSION_5
         float paddingX = 50.0f;
         float paddingY = 35.0f;
 
+        private bool DidDamage = false;
+
 
 
         // Constructor
@@ -54,7 +56,12 @@ namespace MONOGAME_VERSION_5
                     // Collision detected
 
                     // Remove health from player
-                    player.Health -= 1;
+                    if (!DidDamage)
+                    {
+                        DidDamage = true;
+                        player.Health -= 1;
+                    }
+                    
 
                     // Play sound
                     //Game1._audioManager.PlaySound("PlayerHit", 0.5f); Build error.. cant use this

@@ -30,6 +30,8 @@ namespace MONOGAME_VERSION_5
         public bool Steer; // If enemy follows player
 
 
+
+
         // Constructor
         public Enemy(Texture2D texture, Vector2 pos, Vector2 size, int depth, int health, bool steer) : base(texture, pos, size, depth)
         {
