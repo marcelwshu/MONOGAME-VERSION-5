@@ -20,10 +20,10 @@ namespace MONOGAME_VERSION_5
     {
 
         // Vars
-        private float DefaultSteerSpeed = 40f;
+        private float DefaultSteerSpeed = 80f;
         public float CurrentSteerSpeed;
 
-        private float DefaultMoveSpeed = 250f;
+        private float DefaultMoveSpeed = 120f;
         public float CurrentMoveSpeed;
 
         public int Health;
@@ -51,7 +51,7 @@ namespace MONOGAME_VERSION_5
 
 
             // Update steer & move speed
-            this.CurrentSteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 4);
+            this.CurrentSteerSpeed = DefaultSteerSpeed + (Game1.CurrentGameSpeed / 4f);
             this.CurrentMoveSpeed = DefaultMoveSpeed + (Game1.CurrentGameSpeed / 4);
 
 
@@ -80,7 +80,7 @@ namespace MONOGAME_VERSION_5
         
         public override void CheckCollisions()
         {
-            base.CheckCollisions();
+            base.CheckCollisions(); // We want to bypass the health of the enemy if it collides with the player, otherwise they would pass over eachother
 
             // Vars
             float paddingX = 20; // Padding is used to decrease hitbox size

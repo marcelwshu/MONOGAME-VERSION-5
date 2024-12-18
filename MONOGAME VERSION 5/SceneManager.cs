@@ -428,55 +428,53 @@ namespace MONOGAME_VERSION_5
 
 
             // Generate random enemies
-            if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed)) // Check if level 2
+            // Check debounce
+            if ((timeNow - LastEnemySpawn) > EnemySpawnDebounce)
             {
 
-                // Check debounce
-                if ((timeNow - LastEnemySpawn) > EnemySpawnDebounce)
+                // Vars
+                LastEnemySpawn = timeNow;
+                Random random = new Random();
+                int randomAmount = random.Next(1, 2);
+
+                // Iterate random amount
+                for (int i = 0; i < randomAmount; i++)
                 {
 
-                    // Vars
-                    LastEnemySpawn = timeNow;
-                    Random random = new Random();
-                    int randomAmount = random.Next(1, 2);
+                    // Calculate random position based on player x axis
+                    int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 3, (int)Game1.WINDOW_SIZE.X / 3);
+                    int randomY = random.Next(-500, -300);
 
-                    // Iterate random amount
-                    for (int i = 0; i < randomAmount; i++)
+
+                    // Decide which enemy type to use
+                    Enemy Enemy;
+                    if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
                     {
-
-                        // Calculate random position based on player x axis
-                        int randomX = (int)player.pos.X + random.Next(-(int)Game1.WINDOW_SIZE.X / 3, (int)Game1.WINDOW_SIZE.X / 3);
-                        int randomY = random.Next(-500, -300);
-
-
-                        // Decide which enemy type to use
-                        Enemy Enemy;
-                        if (Game1.CurrentGameSpeed >= Game1.Level3Threshold + (Game1.DefaultGameSpeed))
-                        {
-                            Enemy = new Enemy(Content.Load<Texture2D>("EnemyHeavy"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 3, true);
-                        }
-                        else
-                        {
-                            Enemy = new Enemy(Content.Load<Texture2D>("EnemyStandard"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 1, false);
-                        }
-
-
-
-                        // Create warning
-                        Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(WarnSize, WarnSize), 3);
-                        WarnSprite.pos = new Vector2(randomX - 50, 0);
-
-                        //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
-                        await Task.Delay(WarnDuration);
-                        activeSprites.Remove(WarnSprite);
-
-
-
-
+                        // Level 3
+                        Enemy = new Enemy(Content.Load<Texture2D>("EnemyHeavy"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 3, true);
+                    }
+                    else if (Game1.CurrentGameSpeed >= Game1.Level2Threshold + (Game1.DefaultGameSpeed))
+                    {
+                        // Level 2
+                        Enemy = new Enemy(Content.Load<Texture2D>("EnemyLevel2"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 2, true);
+                    }
+                    else
+                    {
+                        // Level 1
+                        Enemy = new Enemy(Content.Load<Texture2D>("EnemyStandard"), new Vector2(randomX, randomY), new Vector2(PLAYER_SIZE.X, PLAYER_SIZE.Y), 1, 1, false);
                     }
 
 
+
+                    // Create warning
+                    Sprite WarnSprite = new Sprite(Content.Load<Texture2D>("warningRed"), new Vector2(randomX, 0), new Vector2(WarnSize, WarnSize), 3);
+                    WarnSprite.pos = new Vector2(randomX - 50, 0);
+
+                    //await Task.Delay( ((int)MathF.Abs(randomY / (int)Game1.CurrentGameSpeed)) * 1000 );
+                    await Task.Delay(WarnDuration);
+                    activeSprites.Remove(WarnSprite);
                 }
+
 
             }
 
